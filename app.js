@@ -23,16 +23,12 @@ let blogSchema = new mongoose.Schema({
 
 let Blog = mongoose.model("Blog", blogSchema);
 
-Blog.create({
-    title: 'test',
-    image: 'https://images.unsplash.com/photo-1532510987384-6a8118ab6ab2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b4a201bfb3f3bd0d0b527cf6d0f15a9a&auto=format&fit=crop&w=1308&q=80',
-    body: 'this is a test blog post.'
-});
 // restful routes
 app.get('/', function (req, res) {
 
     res.redirect('/blogs');
 });
+
 
 app.get('/blogs', function (req, res) {
     Blog.find({}, function (err, blogs) {
@@ -46,6 +42,22 @@ app.get('/blogs', function (req, res) {
     });
 });
 
+// NEW ROUTE
+app.get("/blogs/new", function (req, res) {
+    res.render("new");
+});
+
+// CREATE ROUTE
+app.post("/blogs", function (req, res) {
+   // create blog
+    Blog.create(req.body.blog, function (err, newBlog) {
+        if (err) {
+            res.render("new");
+        } else {
+            res.redirect("/blogs");
+        }
+    });
+});
 
 app.listen(1000, function (req, res) {
     console.log('Server started');
