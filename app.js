@@ -24,18 +24,18 @@ let blogSchema = new mongoose.Schema({
 let Blog = mongoose.model("Blog", blogSchema);
 
 // restful routes
-app.get('/', function (req, res) {
+app.get("/", function (req, res) {
 
-    res.redirect('/blogs');
+    res.redirect("/blogs");
 });
 
 
-app.get('/blogs', function (req, res) {
+app.get("/blogs", function (req, res) {
     Blog.find({}, function (err, blogs) {
         if (err) {
             console.log(err);
         } else {
-            res.render('index', {
+            res.render("index", {
                 blogs: blogs
             });
         }
@@ -59,6 +59,17 @@ app.post("/blogs", function (req, res) {
     });
 });
 
+// SHOW ROUTE
+app.get("/blogs/:id", function (req, res) { 
+    Blog.findById(req.params.id, function (err, foundBlog) { 
+        if (err) {
+            res.redirect("/blogs");
+        } else {
+            res.render("show", { blog: foundBlog });
+        }
+     })
+});
+
 app.listen(1000, function (req, res) {
-    console.log('Server started');
+    console.log("Server started");
 });
