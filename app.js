@@ -29,7 +29,7 @@ app.get("/", function (req, res) {
     res.redirect("/blogs");
 });
 
-
+// INDEX ROUTE
 app.get("/blogs", function (req, res) {
     Blog.find({}, function (err, blogs) {
         if (err) {
@@ -68,6 +68,17 @@ app.get("/blogs/:id", function (req, res) {
             res.render("show", { blog: foundBlog });
         }
      })
+});
+
+// EDIT ROUTE
+app.get("/blogs/:id/edit", function (req, res) { 
+    Blog.findById(req.params.id, function (err, foundBlog) { 
+        if (err) {
+            res.redirect("/blogs");
+        } else {
+            res.render("edit", { blog: foundBlog });
+        }
+     });
 });
 
 app.listen(1000, function (req, res) {
